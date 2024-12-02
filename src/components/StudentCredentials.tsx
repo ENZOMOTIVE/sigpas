@@ -6,7 +6,7 @@ import { toast } from 'react-hot-toast';
 interface Credential {
   tokenId: string;
   isValid: boolean;
-  signatureCount: string;
+  signatureCount: number;
   metadata: {
     name: string;
     description: string;
@@ -24,14 +24,21 @@ export const StudentCredentials: React.FC = () => {
 
       try {
         const contract = await getContract();
-        const filter = contract.filters.CredentialCreated(null, account, null);
+        const filter = contract.filters.CredentialCreated();
         const events = await contract.queryFilter(filter);
 
         const credentialPromises = events.map(async (event: any) => {
           const tokenId = event.args.tokenId;
+          const student = event.args.student;
+
+          // Only process credentials for the current account
+          if (student.toLowerCase() !== account.toLowerCase()) {
+            return null;
+          }
+
           const isValid = await contract.isCredentialValid(tokenId);
           const signatureCount = await contract.getSignatureCount(tokenId);
-          const metadataURI = event.args.metadataURI;
+          const metadataURI = await contract.tokenURI(tokenId);
 
           // Fetch metadata from IPFS
           const response = await fetch(metadataURI.replace('ipfs://', 'https://gateway.pinata.cloud/ipfs/'));
@@ -40,12 +47,12 @@ export const StudentCredentials: React.FC = () => {
           return {
             tokenId: tokenId.toString(),
             isValid,
-            signatureCount: signatureCount.toString(),
+            signatureCount: Number(signatureCount),
             metadata,
           };
         });
 
-        const resolvedCredentials = await Promise.all(credentialPromises);
+        const resolvedCredentials = (await Promise.all(credentialPromises)).filter(Boolean) as Credential[];
         setCredentials(resolvedCredentials);
       } catch (error) {
         console.error('Error fetching credentials:', error);
@@ -110,3 +117,6 @@ export const StudentCredentials: React.FC = () => {
     </div>
   );
 };
+
+export default StudentCredentials;
+

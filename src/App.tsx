@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { WalletProvider } from './context/WalletContext';
 import { CreateCredential } from './components/CreateCredential';
-import { StudentCredentials } from './components/StudentCredentials';
+import StudentCredentials from './components/StudentCredentials';
 import { ValidatorDashboard } from './components/ValidatorDashboard';
 import Navigation from './components/Navigation';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -21,7 +21,7 @@ function App() {
               <Route path="/" element={
                 <div className="text-center">
                   <h1 className="text-4xl font-bold text-gray-900 mb-8">
-                  Introducing Multisignature NFTs
+                    Introducing Multisignature NFTs
                   </h1>
                   <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                     A 2 Layered Security Protocol for Sharing NFTs.

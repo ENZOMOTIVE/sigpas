@@ -46,3 +46,4 @@ export const checkIfWalletIsConnected = async () => {
     return null;
   }
 };
+
