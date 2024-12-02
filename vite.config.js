@@ -8,8 +8,12 @@ export default defineConfig({
     // Add historyApiFallback for React Router
     historyApiFallback: true,
   },
+  css: {
+    postcss: './postcss.config.js'
+  },
   optimizeDeps: {
     include: ['ethers', 'react-router-dom', 'react-hot-toast'],
+    exclude: ['lucid-react'],
   },
 })
 

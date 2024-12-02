@@ -1,32 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { ShieldX, Home } from 'lucide-react';
 
 const Unauthorized: React.FC = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Unauthorized Access
+    <div className="min-h-[80vh] flex items-center justify-center">
+      <div className="max-w-md w-full text-center">
+        <div className="mb-8">
+          <ShieldX className="w-16 h-16 text-primary mx-auto mb-4" />
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            Access Denied
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            You do not have permission to access this page.
+          <p className="text-gray-600">
+            You don't have permission to access this page. Please make sure you're connected with the correct wallet and role.
           </p>
         </div>
-        <div className="mt-8 space-y-6">
-          <div>
-            <Link
-              to="/"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Return to Home
-            </Link>
-          </div>
-        </div>
+        <Link
+          to="/"
+          className="btn-primary inline-flex items-center gap-2"
+        >
+          <Home className="w-5 h-5" />
+          Return to Home
+        </Link>
       </div>
     </div>
   );
 };
 
 export default Unauthorized;
-

@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { checkIfWalletIsConnected, connectWallet, getContract } from '../utils/ethereum';
+import { checkIfWalletIsConnected, connectWallet } from '../utils/ethereum';
+import { useWalletRole, Role } from '../hooks/useWalletRole';
 import { toast } from 'react-hot-toast';
-
-type Role = 'student' | 'issuer' | 'validator' | null;
 
 interface WalletContextType {
   account: string | null;
@@ -24,41 +23,20 @@ export const useWallet = () => useContext(WalletContext);
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [account, setAccount] = useState<string | null>(null);
-  const [role, setRole] = useState<Role>(null);
   const [connecting, setConnecting] = useState(false);
-
-  const checkRole = async (address: string) => {
-    const contract = await getContract();
-    const isIssuer = await contract.hasRole(await contract.ISSUER_ROLE(), address);
-    const isValidator = await contract.hasRole(await contract.VALIDATOR_ROLE(), address);
-    
-    if (isIssuer) return 'issuer';
-    if (isValidator) return 'validator';
-    return 'student';
-  };
+  const role = useWalletRole(account);
 
   useEffect(() => {
     const checkWallet = async () => {
       const address = await checkIfWalletIsConnected();
       setAccount(address);
-      if (address) {
-        const userRole = await checkRole(address);
-        setRole(userRole);
-      }
     };
 
     checkWallet();
 
     if (window.ethereum) {
-      window.ethereum.on('accountsChanged', async (accounts: string[]) => {
-        const newAccount = accounts[0] || null;
-        setAccount(newAccount);
-        if (newAccount) {
-          const userRole = await checkRole(newAccount);
-          setRole(userRole);
-        } else {
-          setRole(null);
-        }
+      window.ethereum.on('accountsChanged', (accounts: string[]) => {
+        setAccount(accounts[0] || null);
       });
     }
   }, []);
@@ -68,8 +46,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setConnecting(true);
       const address = await connectWallet();
       setAccount(address);
-      const userRole = await checkRole(address);
-      setRole(userRole);
       toast.success('Wallet connected successfully!');
     } catch (error) {
       toast.error('Failed to connect wallet');
@@ -81,7 +57,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const disconnect = () => {
     setAccount(null);
-    setRole(null);
     toast.success('Wallet disconnected');
   };
 
@@ -91,4 +66,3 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     </WalletContext.Provider>
   );
 };
-

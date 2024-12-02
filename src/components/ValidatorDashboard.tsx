@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useWallet } from '../context/WalletContext';
 import { getContract } from '../utils/ethereum';
 import { toast } from 'react-hot-toast';
+import { Shield, Clock, CheckCircle, Loader2 } from 'lucide-react';
 
 interface PendingCredential {
   tokenId: string;
@@ -16,6 +17,7 @@ interface PendingCredential {
 export const ValidatorDashboard: React.FC = () => {
   const [pendingCredentials, setPendingCredentials] = useState<PendingCredential[]>([]);
   const [loading, setLoading] = useState(true);
+  const [signingId, setSigningId] = useState<string | null>(null);
   const { account } = useWallet();
 
   useEffect(() => {
@@ -62,20 +64,19 @@ export const ValidatorDashboard: React.FC = () => {
   }, [account]);
 
   const handleSign = async (tokenId: string) => {
+    setSigningId(tokenId);
     try {
       const contract = await getContract();
       const tx = await contract.signCredential(tokenId);
       await tx.wait();
       
       toast.success('Credential signed successfully!');
-      
-      // Remove the signed credential from the list
-      setPendingCredentials(prev => 
-        prev.filter(cred => cred.tokenId !== tokenId)
-      );
+      setPendingCredentials(prev => prev.filter(cred => cred.tokenId !== tokenId));
     } catch (error) {
       console.error('Error signing credential:', error);
       toast.error('Failed to sign credential');
+    } finally {
+      setSigningId(null);
     }
   };
 
@@ -89,44 +90,62 @@ export const ValidatorDashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="text-center py-12">
-        <p className="text-xl text-gray-600">Loading pending credentials...</p>
+      <div className="flex items-center justify-center py-12">
+        <Clock className="w-6 h-6 text-primary animate-spin" />
+        <span className="ml-2 text-xl text-gray-600">Loading pending credentials...</span>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6">Pending Validations</h2>
+    <div className="max-w-4xl mx-auto">
+      <div className="flex items-center gap-3 mb-8">
+        <Shield className="w-8 h-8 text-primary" />
+        <h2 className="text-2xl font-bold text-gray-900">Pending Validations</h2>
+      </div>
       <div className="grid gap-6">
         {pendingCredentials.map((credential) => (
-          <div 
-            key={credential.tokenId}
-            className="bg-white rounded-lg shadow-md p-6"
-          >
-            <h3 className="text-xl font-semibold mb-2">{credential.metadata.name}</h3>
-            <p className="text-gray-600 mb-4">{credential.metadata.description}</p>
-            <div className="flex justify-between items-center">
-              <div>
-                <span className="text-sm text-gray-500">
-                  Student: {credential.student}
-                </span>
-                <br />
-                <span className="text-sm text-gray-500">
-                  Current Signatures: {credential.signatureCount}
-                </span>
+          <div key={credential.tokenId} className="card">
+            <div className="flex justify-between items-start">
+              <div className="flex-1">
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  {credential.metadata.name}
+                </h3>
+                <p className="text-gray-600 mb-4">{credential.metadata.description}</p>
+                <div className="flex gap-4 text-sm text-gray-500">
+                  <span className="flex items-center gap-1">
+                    <CheckCircle className="w-4 h-4" />
+                    Signatures: {credential.signatureCount}
+                  </span>
+                  <span>•</span>
+                  <span className="truncate">Student: {credential.student}</span>
+                </div>
               </div>
               <button
                 onClick={() => handleSign(credential.tokenId)}
-                className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                disabled={signingId === credential.tokenId}
+                className="btn-primary flex items-center gap-2 ml-4"
               >
-                Sign Credential
+                {signingId === credential.tokenId ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Signing...
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle className="w-5 h-5" />
+                    Sign
+                  </>
+                )}
               </button>
             </div>
           </div>
         ))}
         {pendingCredentials.length === 0 && (
-          <p className="text-gray-500 text-center">No pending credentials</p>
+          <div className="text-center py-8 card">
+            <CheckCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-500">No pending credentials to validate</p>
+          </div>
         )}
       </div>
     </div>

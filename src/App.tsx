@@ -8,24 +8,43 @@ import { ValidatorDashboard } from './components/ValidatorDashboard';
 import Navigation from './components/Navigation';
 import ProtectedRoute from './components/ProtectedRoute';
 import Unauthorized from './components/Unauthorized';
+import { Shield, BookOpen, Award } from 'lucide-react';
 import './index.css';
 
 function App() {
   return (
     <WalletProvider>
       <Router>
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-gray-50">
           <Navigation />
           <main className="container mx-auto px-4 py-8">
             <Routes>
               <Route path="/" element={
-                <div className="text-center">
-                  <h1 className="text-4xl font-bold text-gray-900 mb-8">
-                    Introducing Multisignature NFTs
+                <div className="max-w-4xl mx-auto text-center py-16">
+                  <h1 className="text-5xl font-bold text-gray-900 mb-8">
+                    Secure Digital Credentials with{' '}
+                    <span className="text-primary">EduChain</span>
                   </h1>
-                  <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                    A 2 Layered Security Protocol for Sharing NFTs.
+                  <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
+                    A revolutionary platform for issuing and verifying academic credentials using blockchain technology.
                   </p>
+                  <div className="grid md:grid-cols-3 gap-8 mt-16">
+                    <div className="card">
+                      <Shield className="w-12 h-12 text-primary mx-auto mb-4" />
+                      <h3 className="text-xl font-semibold mb-2">Secure</h3>
+                      <p className="text-gray-600">Multi-signature verification ensures credential authenticity</p>
+                    </div>
+                    <div className="card">
+                      <BookOpen className="w-12 h-12 text-primary mx-auto mb-4" />
+                      <h3 className="text-xl font-semibold mb-2">Transparent</h3>
+                      <p className="text-gray-600">Immutable blockchain records for complete traceability</p>
+                    </div>
+                    <div className="card">
+                      <Award className="w-12 h-12 text-primary mx-auto mb-4" />
+                      <h3 className="text-xl font-semibold mb-2">Verifiable</h3>
+                      <p className="text-gray-600">Instant verification of academic achievements</p>
+                    </div>
+                  </div>
                 </div>
               } />
               <Route 
@@ -44,11 +63,30 @@ function App() {
             </Routes>
           </main>
         </div>
-        <Toaster position="top-right" />
+        <Toaster 
+          position="top-right"
+          toastOptions={{
+            style: {
+              background: '#333',
+              color: '#fff',
+            },
+            success: {
+              duration: 3000,
+              style: {
+                background: '#059669',
+              },
+            },
+            error: {
+              duration: 3000,
+              style: {
+                background: '#dc2626',
+              },
+            },
+          }}
+        />
       </Router>
     </WalletProvider>
   );
 }
 
 export default App;
-

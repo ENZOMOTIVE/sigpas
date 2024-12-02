@@ -1,26 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useWallet } from '../context/WalletContext';
+import { Wallet, LogOut } from 'lucide-react';
 
 const Navigation: React.FC = () => {
   const { account, role, connecting, connect, disconnect } = useWallet();
 
   return (
-    <nav className="bg-white shadow-lg">
-      <div className="max-w-7xl mx-auto px-4">
+    <nav className="bg-white shadow-custom">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
-            <div className="flex-shrink-0 flex items-center">
-              <Link to="/" className="text-xl font-bold text-indigo-600">
-                EduChain
-              </Link>
-            </div>
+            <Link to="/" className="flex items-center">
+              <span className="text-2xl font-bold text-primary">EduChain</span>
+            </Link>
             {account && (
-              <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+              <div className="hidden sm:ml-8 sm:flex sm:space-x-6 items-center">
                 {role === 'student' && (
                   <Link
                     to="/my-credentials"
-                    className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
+                    className="text-gray-700 hover:text-primary transition-colors duration-200"
                   >
                     My Credentials
                   </Link>
@@ -28,7 +27,7 @@ const Navigation: React.FC = () => {
                 {role === 'issuer' && (
                   <Link
                     to="/create"
-                    className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
+                    className="text-gray-700 hover:text-primary transition-colors duration-200"
                   >
                     Create Credential
                   </Link>
@@ -36,7 +35,7 @@ const Navigation: React.FC = () => {
                 {role === 'validator' && (
                   <Link
                     to="/validator"
-                    className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
+                    className="text-gray-700 hover:text-primary transition-colors duration-200"
                   >
                     Validator Dashboard
                   </Link>
@@ -49,20 +48,25 @@ const Navigation: React.FC = () => {
               <button
                 onClick={connect}
                 disabled={connecting}
-                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="btn-primary flex items-center gap-2"
               >
+                <Wallet size={20} />
                 {connecting ? 'Connecting...' : 'Connect Wallet'}
               </button>
             ) : (
               <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-700">
-                  {`${account.slice(0, 6)}...${account.slice(-4)}`} ({role})
+                <span className="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+                  {`${account.slice(0, 6)}...${account.slice(-4)}`}
+                </span>
+                <span className="text-sm font-medium text-primary capitalize">
+                  {role}
                 </span>
                 <button
                   onClick={disconnect}
-                  className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                  className="btn-secondary flex items-center gap-2"
                 >
-                  Logout
+                  <LogOut size={18} />
+                  Disconnect
                 </button>
               </div>
             )}
@@ -74,4 +78,3 @@ const Navigation: React.FC = () => {
 };
 
 export default Navigation;
-
