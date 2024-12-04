@@ -1,4 +1,4 @@
-
+// App.tsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { WalletProvider } from './context/WalletContext';
@@ -11,22 +11,24 @@ import Unauthorized from './components/Unauthorized';
 import { Shield, BookOpen, Award } from 'lucide-react';
 import './index.css';
 
+
 function App() {
   return (
     <WalletProvider>
       <Router>
         <div className="min-h-screen bg-gray-50">
+         
           <Navigation />
           <main className="container mx-auto px-4 py-8">
             <Routes>
               <Route path="/" element={
                 <div className="max-w-4xl mx-auto text-center py-16">
                   <h1 className="text-5xl font-bold text-gray-900 mb-8">
-                    Secure Digital Credentials with{' '}
-                    <span className="text-primary">EduChain</span>
+                    Introducing Multiple Signature Minting{' '}
+                    <span className="text-primary">Sigpas</span>
                   </h1>
                   <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
-                    A revolutionary platform for issuing and verifying academic credentials using blockchain technology.
+                   Adding an extra layer of proof and trust to the NFTs.
                   </p>
                   <div className="grid md:grid-cols-3 gap-8 mt-16">
                     <div className="card">
