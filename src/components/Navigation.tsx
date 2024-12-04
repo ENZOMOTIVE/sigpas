@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useWallet } from '../context/WalletContext';
 import { Wallet, LogOut } from 'lucide-react';
+import Logo from '../../Assets/main.png'; 
 
 const Navigation: React.FC = () => {
   const { account, role, connecting, connect, disconnect } = useWallet();
@@ -12,7 +13,11 @@ const Navigation: React.FC = () => {
         <div className="flex justify-between h-16">
           <div className="flex">
             <Link to="/" className="flex items-center">
-              <span className="text-2xl font-bold text-primary">EduChain</span>
+            <img 
+    src={Logo} 
+    alt="Your Logo"
+    className="inline-block h-12 align-baseline" // Adjust height as needed
+  />
             </Link>
             {account && (
               <div className="hidden sm:ml-8 sm:flex sm:space-x-6 items-center">

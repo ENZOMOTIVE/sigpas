@@ -21,8 +21,21 @@ export default {
           700: '#d84315',
           800: '#bf360c',
           900: '#9f2f00',
+        },
+        orange: {
+          50: '#fff7ed',
+          100: '#ffedd5',
+          200: '#fed7aa',
+          300: '#fdba74',
+          400: '#fb923c',
+          500: '#f97316',
+          600: '#ea580c',
+          700: '#c2410c',
+          800: '#9a3412',
+          900: '#7c2d12',
         }
       },
+      // Rest of your existing extend configurations
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
       },
@@ -42,4 +55,3 @@ export default {
     }),
   ],
 }
-
