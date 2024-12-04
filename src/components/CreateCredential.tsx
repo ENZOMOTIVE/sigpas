@@ -5,10 +5,18 @@ import { getContract } from '../utils/ethereum';
 import { toast } from 'react-hot-toast';
 import { FileCheck, Loader2 } from 'lucide-react';
 
+const credentialOptions = [
+  { value: 'btech', label: 'B.Tech Certificate', template: 'academic' },
+  { value: 'mtech', label: 'M.Tech Certificate', template: 'academic' },
+  { value: 'driving', label: 'Driving License', template: 'license' },
+  { value: 'course', label: 'Online Course Certificate', template: 'course' },
+  { value: 'achievement', label: 'Achievement Award', template: 'award' },
+];
+
 export const CreateCredential: React.FC = () => {
   const { account } = useWallet();
   const [studentAddress, setStudentAddress] = useState('');
-  const [credentialName, setCredentialName] = useState('');
+  const [credentialType, setCredentialType] = useState('');
   const [description, setDescription] = useState('');
   const [requiredSignatures, setRequiredSignatures] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
@@ -18,12 +26,18 @@ export const CreateCredential: React.FC = () => {
     setIsLoading(true);
 
     try {
+      const selectedCredential = credentialOptions.find(option => option.value === credentialType);
+      if (!selectedCredential) {
+        throw new Error('Invalid credential type');
+      }
+
       const metadata = {
-        name: credentialName,
+        name: selectedCredential.label,
         description,
         attributes: {
           issueDate: new Date().toISOString(),
           requiredSignatures,
+          template: selectedCredential.template,
         },
       };
 
@@ -38,7 +52,7 @@ export const CreateCredential: React.FC = () => {
 
       toast.success('Credential created successfully!');
       setStudentAddress('');
-      setCredentialName('');
+      setCredentialType('');
       setDescription('');
       setRequiredSignatures(2);
     } catch (error) {
@@ -81,16 +95,21 @@ export const CreateCredential: React.FC = () => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Credential Name
+              Credential Type
             </label>
-            <input
-              type="text"
-              value={credentialName}
-              onChange={(e) => setCredentialName(e.target.value)}
+            <select
+              value={credentialType}
+              onChange={(e) => setCredentialType(e.target.value)}
               className="input-field"
               required
-              placeholder="Bachelor of Science in Computer Science"
-            />
+            >
+              <option value="">Select a credential type</option>
+              {credentialOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>
@@ -140,3 +159,4 @@ export const CreateCredential: React.FC = () => {
     </div>
   );
 };
+

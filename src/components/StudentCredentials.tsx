@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useWallet } from '../context/WalletContext';
 import { getContract } from '../utils/ethereum';
 import { toast } from 'react-hot-toast';
-import { Award, Clock, CheckCircle } from 'lucide-react';
+import { Award, Clock, CheckCircle, FileText, Car, Laptop, Trophy } from 'lucide-react';
+
 
 interface Credential {
   tokenId: string;
@@ -11,8 +12,83 @@ interface Credential {
   metadata: {
     name: string;
     description: string;
+    attributes: {
+      issueDate: string;
+      template: string;
+    };
   };
 }
+
+const CredentialTemplate: React.FC<{ credential: Credential }> = ({ credential }) => {
+  const { metadata, isValid, signatureCount } = credential;
+  const { name, description, attributes } = metadata;
+  const { issueDate, template } = attributes;
+
+  const getTemplateStyles = () => {
+    switch (template) {
+      case 'academic':
+        return 'bg-blue-50 border-blue-200';
+      case 'license':
+        return 'bg-green-50 border-green-200';
+      case 'course':
+        return 'bg-purple-50 border-purple-200';
+      case 'award':
+        return 'bg-yellow-50 border-yellow-200';
+      default:
+        return 'bg-gray-50 border-gray-200';
+    }
+  };
+
+  const getTemplateIcon = () => {
+    switch (template) {
+      case 'academic':
+        return <FileText className="w-12 h-12 text-blue-500" />;
+      case 'license':
+        return <Car className="w-12 h-12 text-green-500" />;
+      case 'course':
+        return <Laptop className="w-12 h-12 text-purple-500" />;
+      case 'award':
+        return <Trophy className="w-12 h-12 text-yellow-500" />;
+      default:
+        return <Award className="w-12 h-12 text-gray-500" />;
+    }
+  };
+
+  return (
+    <div className={`card ${getTemplateStyles()} transition-all duration-300 hover:shadow-lg`}>
+      <div className="flex items-start justify-between">
+        <div className="flex items-center gap-4">
+          {getTemplateIcon()}
+          <div>
+            <h3 className="text-xl font-semibold text-gray-900">{name}</h3>
+            <p className="text-sm text-gray-600 mt-1">{description}</p>
+          </div>
+        </div>
+        <span className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm ${
+          isValid 
+            ? 'bg-green-100 text-green-800' 
+            : 'bg-yellow-100 text-yellow-800'
+        }`}>
+          {isValid ? (
+            <>
+              <CheckCircle className="w-4 h-4" />
+              Validated
+            </>
+          ) : (
+            <>
+              <Clock className="w-4 h-4" />
+              Pending
+            </>
+          )}
+        </span>
+      </div>
+      <div className="mt-4 pt-4 border-t border-gray-200 flex justify-between items-center text-sm text-gray-500">
+        <span>Issue Date: {new Date(issueDate).toLocaleDateString()}</span>
+        <span>Signatures: {signatureCount}</span>
+      </div>
+    </div>
+  );
+};
 
 const StudentCredentials: React.FC = () => {
   const [credentials, setCredentials] = useState<Credential[]>([]);
@@ -89,36 +165,7 @@ const StudentCredentials: React.FC = () => {
       </div>
       <div className="grid gap-6">
         {credentials.map((credential) => (
-          <div key={credential.tokenId} className="card">
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900">{credential.metadata.name}</h3>
-                <p className="text-gray-600 mt-2">{credential.metadata.description}</p>
-              </div>
-              <span className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm ${
-                credential.isValid 
-                  ? 'bg-green-100 text-green-800' 
-                  : 'bg-yellow-100 text-yellow-800'
-              }`}>
-                {credential.isValid ? (
-                  <>
-                    <CheckCircle className="w-4 h-4" />
-                    Validated
-                  </>
-                ) : (
-                  <>
-                    <Clock className="w-4 h-4" />
-                    Pending
-                  </>
-                )}
-              </span>
-            </div>
-            <div className="flex gap-4 text-sm text-gray-500">
-              <span>Token ID: {credential.tokenId}</span>
-              <span>•</span>
-              <span>Signatures: {credential.signatureCount}</span>
-            </div>
-          </div>
+          <CredentialTemplate key={credential.tokenId} credential={credential} />
         ))}
         {credentials.length === 0 && (
           <div className="text-center py-8 card">
@@ -132,3 +179,4 @@ const StudentCredentials: React.FC = () => {
 };
 
 export default StudentCredentials;
+
