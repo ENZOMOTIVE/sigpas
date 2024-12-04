@@ -33,12 +33,13 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     };
 
     checkWallet();
-
     if (window.ethereum) {
-      window.ethereum.on('accountsChanged', (accounts: string[]) => {
+      (window as any).ethereum.on('accountsChanged', (accounts: string[]) => {
         setAccount(accounts[0] || null);
       });
     }
+    
+   
   }, []);
 
   const connect = async () => {
