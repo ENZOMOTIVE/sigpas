@@ -26,23 +26,23 @@ const Navigation: React.FC = () => {
                     to="/my-credentials"
                     className="text-gray-700 hover:text-primary transition-colors duration-200"
                   >
-                    My Credentials
+                    My-Credentials
                   </Link>
                 )}
                 {role === 'issuer' && (
                   <Link
-                    to="/create"
-                    className="text-gray-700 hover:text-primary transition-colors duration-200"
-                  >
-                    Create Credential
-                  </Link>
+                  to="/issuer"
+                  className="text-gray-700 hover:text-primary transition-colors duration-200"
+                >
+                  Dashboard
+                </Link>
                 )}
                 {role === 'validator' && (
                   <Link
                     to="/validator"
                     className="text-gray-700 hover:text-primary transition-colors duration-200"
                   >
-                    Validator Dashboard
+                    Dashboard
                   </Link>
                 )}
               </div>

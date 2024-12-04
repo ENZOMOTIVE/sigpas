@@ -1,8 +1,8 @@
-// App.tsx
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { WalletProvider } from './context/WalletContext';
-import { CreateCredential } from './components/CreateCredential';
+import { IssuerDashboard } from './components/IssuerDashboard';
 import StudentCredentials from './components/StudentCredentials';
 import { ValidatorDashboard } from './components/ValidatorDashboard';
 import Navigation from './components/Navigation';
@@ -11,13 +11,11 @@ import Unauthorized from './components/Unauthorized';
 import { Shield, BookOpen, Award } from 'lucide-react';
 import './index.css';
 
-
 function App() {
   return (
     <WalletProvider>
       <Router>
         <div className="min-h-screen bg-gray-50">
-         
           <Navigation />
           <main className="container mx-auto px-4 py-8">
             <Routes>
@@ -28,7 +26,7 @@ function App() {
                     <span className="text-primary">Sigpas</span>
                   </h1>
                   <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
-                   Adding an extra layer of proof and trust to the NFTs.
+                    Adding an extra layer of proof and trust to the NFTs.
                   </p>
                   <div className="grid md:grid-cols-3 gap-8 mt-16">
                     <div className="card">
@@ -50,8 +48,8 @@ function App() {
                 </div>
               } />
               <Route 
-                path="/create" 
-                element={<ProtectedRoute component={CreateCredential} allowedRoles={['issuer']} />} 
+                path="/issuer" 
+                element={<ProtectedRoute component={IssuerDashboard} allowedRoles={['issuer']} />} 
               />
               <Route 
                 path="/my-credentials" 
@@ -92,3 +90,4 @@ function App() {
 }
 
 export default App;
+

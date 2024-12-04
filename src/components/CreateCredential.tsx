@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { useWallet } from '../context/WalletContext';
-import { uploadToPinata } from '../utils/pinata';
-import { getContract } from '../utils/ethereum';
 import { toast } from 'react-hot-toast';
 import { FileCheck, Loader2 } from 'lucide-react';
 
@@ -13,7 +11,27 @@ const credentialOptions = [
   { value: 'achievement', label: 'Achievement Award', template: 'award' },
 ];
 
-export const CreateCredential: React.FC = () => {
+interface CreateCredentialProps {
+  onSuccess: (newCredential: any) => void;
+}
+
+interface Credential {
+  tokenId: string;
+  isValid: boolean;
+  signatureCount: number;
+  requiredSignatures: number;
+  metadata: {
+    name: string;
+    description: string;
+    attributes: {
+      issueDate: string;
+      template: string;
+    };
+  };
+  student: string;
+}
+
+export const CreateCredential: React.FC<CreateCredentialProps> = ({ onSuccess }) => {
   const { account } = useWallet();
   const [studentAddress, setStudentAddress] = useState('');
   const [credentialType, setCredentialType] = useState('');
@@ -31,26 +49,24 @@ export const CreateCredential: React.FC = () => {
         throw new Error('Invalid credential type');
       }
 
-      const metadata = {
-        name: selectedCredential.label,
-        description,
-        attributes: {
-          issueDate: new Date().toISOString(),
-          requiredSignatures,
-          template: selectedCredential.template,
+      const newCredential: Credential = {
+        tokenId: '', // This will be set in the IssuerDashboard
+        isValid: false,
+        signatureCount: 0,
+        requiredSignatures,
+        metadata: {
+          name: selectedCredential.label,
+          description,
+          attributes: {
+            issueDate: new Date().toISOString(),
+            template: selectedCredential.template,
+          },
         },
+        student: studentAddress,
       };
 
-      const metadataURI = await uploadToPinata(metadata);
-      const contract = await getContract();
-      const tx = await contract.createCredential(
-        studentAddress,
-        metadataURI,
-        requiredSignatures
-      );
-      await tx.wait();
+      onSuccess(newCredential);
 
-      toast.success('Credential created successfully!');
       setStudentAddress('');
       setCredentialType('');
       setDescription('');
@@ -62,14 +78,6 @@ export const CreateCredential: React.FC = () => {
       setIsLoading(false);
     }
   };
-
-  if (!account) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-xl text-gray-600">Please connect your wallet to create credentials.</p>
-      </div>
-    );
-  }
 
   return (
     <div className="max-w-2xl mx-auto">
