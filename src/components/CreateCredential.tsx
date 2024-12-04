@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useWallet } from '../context/WalletContext';
 import { toast } from 'react-hot-toast';
 import { FileCheck, Loader2 } from 'lucide-react';
 
@@ -32,7 +31,7 @@ interface Credential {
 }
 
 export const CreateCredential: React.FC<CreateCredentialProps> = ({ onSuccess }) => {
-  const { account } = useWallet();
+ 
   const [studentAddress, setStudentAddress] = useState('');
   const [credentialType, setCredentialType] = useState('');
   const [description, setDescription] = useState('');

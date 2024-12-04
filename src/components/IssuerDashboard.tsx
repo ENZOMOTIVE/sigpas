@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWallet } from '../context/WalletContext';
-import { getContract } from '../utils/ethereum';
 import { toast } from 'react-hot-toast';
-import { FileCheck, Clock, Search, Plus, Filter } from 'lucide-react';
+import { FileCheck, Search, Plus, Filter } from 'lucide-react';
 import { CreateCredential } from './CreateCredential';
 import CredentialCard from './CredentialCard';
 

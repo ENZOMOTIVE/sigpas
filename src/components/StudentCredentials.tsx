@@ -10,6 +10,8 @@ interface Credential {
   tokenId: string;
   isValid: boolean;
   signatureCount: number;
+  requiredSignatures: number;
+  student: string;
   metadata: {
     name: string;
     description: string;
@@ -19,6 +21,7 @@ interface Credential {
     };
   };
 }
+
 
 const StudentCredentials: React.FC = () => {
   const [credentials, setCredentials] = useState<Credential[]>([]);
