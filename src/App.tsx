@@ -1,56 +1,107 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import { WalletProvider } from './context/WalletContext';
-import { IssuerDashboard } from './components/IssuerDashboard';
-import StudentCredentials from './components/StudentCredentials';
-import { ValidatorDashboard } from './components/ValidatorDashboard';
-import Navigation from './components/Navigation';
-import ProtectedRoute from './components/ProtectedRoute';
-import Unauthorized from './components/Unauthorized';
-import { MintingHistoryGraph } from './components/graph';
-import { Shield, BookOpen, Award } from 'lucide-react';
-import './index.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
+import { WalletProvider } from './context/WalletContext'
+import { IssuerDashboard } from './components/IssuerDashboard'
+import StudentCredentials from './components/StudentCredentials'
+import { ValidatorDashboard } from './components/ValidatorDashboard'
+import Navigation from './components/Navigation'
+import ProtectedRoute from './components/ProtectedRoute'
+import Unauthorized from './components/Unauthorized'
+import { Shield, BookOpen, Award, ArrowRight } from 'lucide-react'
+import { AnimatedBackground } from './components/ui/animated-background'
+import { FunMintingViz } from './components/fun-minting-viz'
+import { motion } from 'framer-motion'
+import './index.css'
+
+const FeatureCard = ({ icon: Icon, title, description }: any) => (
+  <motion.div 
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    className="group relative overflow-hidden rounded-2xl bg-white p-8 shadow-lg transition-all hover:shadow-xl"
+  >
+    <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+    <div className="relative">
+      <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-xl bg-primary/10">
+        <Icon className="h-8 w-8 text-primary" />
+      </div>
+      <h3 className="mb-4 text-xl font-semibold text-gray-900">{title}</h3>
+      <p className="text-gray-600">{description}</p>
+    </div>
+  </motion.div>
+)
 
 function App() {
   return (
     <WalletProvider>
       <Router>
-        <div className="min-h-screen bg-gray-50">
+        <div className="relative min-h-screen bg-gray-50">
+          <AnimatedBackground />
           <Navigation />
           <main className="container mx-auto px-4 py-8">
             <Routes>
               <Route path="/" element={
-                <div className="max-w-6xl mx-auto text-center py-16">
-                  <h1 className="text-5xl font-bold text-gray-900 mb-8">
-                    Introducing Multiple Signature Minting{' '}
-                    <span className="text-primary">Sigpas</span>
-                  </h1>
-                  <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
-                    Adding an extra layer of proof and trust to the NFTs.
-                  </p>
-                  <div className="grid md:grid-cols-3 gap-8 mt-16">
-                    <div className="card">
-                      <Shield className="w-12 h-12 text-primary mx-auto mb-4" />
-                      <h3 className="text-xl font-semibold mb-2">Secure</h3>
-                      <p className="text-gray-600">Multi-signature verification ensures credential authenticity</p>
+                <div className="mx-auto max-w-6xl py-16">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-center"
+                  >
+                    <h1 className="mb-8 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-6xl font-bold text-transparent">
+                      Introducing Multiple Signature Minting{' '}
+                      <span className="bg-gradient-to-r from-primary to-orange-500 bg-clip-text text-transparent">
+                        Sigpas
+                      </span>
+                    </h1>
+                    <p className="mx-auto mb-12 max-w-2xl text-xl text-gray-600">
+                      Adding an extra layer of proof and trust to the NFTs.
+                    </p>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="group mb-16 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-lg font-medium text-white shadow-lg transition-all hover:bg-primary-dark hover:shadow-xl"
+                    >
+                      Get Started
+                      <ArrowRight className="transition-transform group-hover:translate-x-1" />
+                    </motion.button>
+                  </motion.div>
+
+                  <motion.div 
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="grid gap-8 md:grid-cols-3"
+                  >
+                    <FeatureCard
+                      icon={Shield}
+                      title="Secure"
+                      description="Multi-signature verification ensures credential authenticity"
+                    />
+                    <FeatureCard
+                      icon={BookOpen}
+                      title="Transparent"
+                      description="Immutable blockchain records for complete traceability"
+                    />
+                    <FeatureCard
+                      icon={Award}
+                      title="Verifiable"
+                      description="Instant verification of academic achievements"
+                    />
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    className="mt-24"
+                  >
+                    <h2 className="mb-8 text-center text-3xl font-bold text-gray-900">
+                      Watch NFTs Being Minted
+                    </h2>
+                    <div className="mx-auto max-w-4xl">
+                      <FunMintingViz />
                     </div>
-                    <div className="card">
-                      <BookOpen className="w-12 h-12 text-primary mx-auto mb-4" />
-                      <h3 className="text-xl font-semibold mb-2">Transparent</h3>
-                      <p className="text-gray-600">Immutable blockchain records for complete traceability</p>
-                    </div>
-                    <div className="card">
-                      <Award className="w-12 h-12 text-primary mx-auto mb-4" />
-                      <h3 className="text-xl font-semibold mb-2">Verifiable</h3>
-                      <p className="text-gray-600">Instant verification of academic achievements</p>
-                    </div>
-                  </div>
-                  <div className="mt-16">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-8">Minting History</h2>
-                    <div className="card">
-                      <MintingHistoryGraph />
-                    </div>
-                  </div>
+                  </motion.div>
                 </div>
               } />
               <Route 
@@ -92,8 +143,8 @@ function App() {
         />
       </Router>
     </WalletProvider>
-  );
+  )
 }
 
-export default App;
+export default App
 

@@ -5,9 +5,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --primary: #ea6100;
+  --primary: #ff6b00;
   --primary-dark: #f45906;
   --primary-light: #ff9e40;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 body {
@@ -22,15 +52,15 @@ body {
 
 @layer components {
   .btn-primary {
-    @apply px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md;
+    @apply inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-medium text-white shadow-lg transition-all hover:bg-primary-dark hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   .btn-secondary {
-    @apply px-4 py-2 bg-white text-primary border border-primary rounded-lg hover:bg-orange-50 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md;
+    @apply inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-medium text-primary border border-primary shadow-lg transition-all hover:bg-orange-50 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   .card {
-    @apply bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 border border-gray-100;
+    @apply relative overflow-hidden rounded-2xl bg-white p-8 shadow-lg transition-all hover:shadow-xl;
   }
 
   .input-field {
@@ -63,31 +93,17 @@ body {
 }
 
 /* Animations */
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
+.animate-float {
+  animation: float 3s ease-in-out infinite;
 }
 
 .animate-pulse-slow {
   animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Graph animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.recharts-area {
-  animation: fadeIn 1s ease-out;
+.animate-gradient {
+  animation: gradient 15s ease infinite;
+  background-size: 400% 400%;
 }
 
 /* Custom scrollbar */
@@ -106,5 +122,18 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary);
+}
+
+/* Utility classes */
+.text-gradient {
+  @apply bg-gradient-to-r from-primary to-orange-500 bg-clip-text text-transparent;
+}
+
+.bg-gradient {
+  @apply bg-gradient-to-br from-orange-50 to-orange-100;
+}
+
+.hover-card {
+  @apply transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg;
 }
 
