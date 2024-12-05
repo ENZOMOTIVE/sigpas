@@ -79,8 +79,8 @@ function App() {
                     />
                     <FeatureCard
                       icon={BookOpen}
-                      title="Transparent"
-                      description="Immutable blockchain records for complete traceability"
+                      title="Cheaper"
+                      description="A layer 3 blockchain, Educhain is used"
                     />
                     <FeatureCard
                       icon={Award}
