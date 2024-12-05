@@ -1,5 +1,4 @@
 "use client"
-
 import { useEffect, useRef } from 'react'
 
 export const AnimatedBackground = () => {
@@ -22,6 +21,7 @@ export const AnimatedBackground = () => {
 
     // Particle system
     class Particle {
+      canvas: HTMLCanvasElement
       x: number
       y: number
       size: number
@@ -29,9 +29,10 @@ export const AnimatedBackground = () => {
       speedY: number
       color: string
 
-      constructor() {
-        this.x = Math.random() * canvas.width
-        this.y = Math.random() * canvas.height
+      constructor(canvas: HTMLCanvasElement) {
+        this.canvas = canvas
+        this.x = Math.random() * this.canvas.width
+        this.y = Math.random() * this.canvas.height
         this.size = Math.random() * 3 + 1
         this.speedX = Math.random() * 2 - 1
         this.speedY = Math.random() * 2 - 1
@@ -42,10 +43,10 @@ export const AnimatedBackground = () => {
         this.x += this.speedX
         this.y += this.speedY
 
-        if (this.x > canvas.width) this.x = 0
-        if (this.x < 0) this.x = canvas.width
-        if (this.y > canvas.height) this.y = 0
-        if (this.y < 0) this.y = canvas.height
+        if (this.x > this.canvas.width) this.x = 0
+        if (this.x < 0) this.x = this.canvas.width
+        if (this.y > this.canvas.height) this.y = 0
+        if (this.y < 0) this.y = this.canvas.height
       }
 
       draw() {
@@ -59,7 +60,7 @@ export const AnimatedBackground = () => {
 
     const particles: Particle[] = []
     for (let i = 0; i < 50; i++) {
-      particles.push(new Particle())
+      particles.push(new Particle(canvas))
     }
 
     const animate = () => {
@@ -88,4 +89,3 @@ export const AnimatedBackground = () => {
     />
   )
 }
-
