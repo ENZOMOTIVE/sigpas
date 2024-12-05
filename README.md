@@ -1,4 +1,4 @@
-# Multisignature NFT Wallet Documentation
+# Sigpas: Reimagining proofs by introducing Multisignature NFTs
 
 ## Table of Contents
 
@@ -6,41 +6,39 @@
 2. [Project Overview](#project-overview)
 3. [Multisignature NFT Concept](#multisignature-nft-concept)
 4. [Current Implementation with ERC721](#current-implementation-with-erc721)
-5. [Workflow](#workflow)
-6. [Technical Implementation](#technical-implementation)
-7. [Security Considerations](#security-considerations)
-8. [Future Enhancements](#future-enhancements)
-9. [Roadmap for New ERC Token](#roadmap-for-new-erc-token)
+5. [Future Enhancements](#future-enhancements)
+6. [Roadmap for New ERC Token](#roadmap-for-new-erc-token)
 
 ## Introduction
 
-This document provides a comprehensive overview of the Multisignature NFT Wallet project. This groundbreaking solution introduces a new concept in NFT management and verification, leveraging multisignature technology to enhance security and trust in digital asset systems.
+The project aims to develop Platform as a Service model to let clients easily mint NFTs following a unique method of multisignature NFTs and transfer it to users.
 
 ## Project Overview
 
-The Multisignature NFT Wallet is a cutting-edge application designed to securely store, manage, and transfer Non-Fungible Tokens (NFTs) using a multisignature approach. It utilizes advanced cryptographic techniques to ensure the highest level of security and integrity for users' digital assets.
+Sigpas lets client to Issue Credentials through Multisignature NFT process. The client can create the token and set the required number of signatures for validation which will result in NFT minting following the ERC721 contract logic.
+
+Deplyed Contract Address on Educhain: 0x03fb364DE447f8e7250e12c1383Bb8D1Bd341ccb
+
 
 Key Features:
-- Secure storage of NFTs
-- Multisignature verification process for NFT transfers
-- User-friendly interface for NFT management
-- Support for NFT creation, transfer, and verification
+- 2 layered minting model
+- Multisignature verification process for NFT creation and transfers.
+- Enhanced trust and Authenticity
+- Platform as a Service Model.
 
 ## Multisignature NFT Concept
 
-The Multisignature NFT concept is a novel approach in the context of digital asset management. This innovation combines the uniqueness and non-fungibility of NFTs with the enhanced security of multisignature technology.
+A Multisignature NFT is a non-fungible token (NFT) that requires multiple parties (signers) to approve or authorize specific actions, such as minting, transferring, or burning the NFT. This adds an additional layer of security, governance, and trust, particularly in collaborative or high-value scenarios.
 
 ### How it works:
 
-1. **Multiple Signatures**: Instead of using a single private key to sign and transfer NFTs, the system requires multiple signatures.
+1. **Create Credentials**: The Client fills in the details, sets the required number of signatures for validation for NFT Creation and starts the minting process.
 
-2. **Threshold Signing**: A predefined number of signatures (threshold) is required to validate an NFT transfer or modification.
+2. **Validators**: The Accounts with validators roles logs in to the validator dashboard and signs the portal.
 
-3. **Distributed Ownership**: By requiring multiple parties to sign, ownership and control of the NFT can be distributed among several entities.
+3. **NFT minting**: ERC721 contract mints the NFT automatically after the required number of validaters sign the credentials.
 
-4. **Enhanced Security**: This approach significantly increases security by making it much harder for an attacker to compromise the NFT.
-
-5. **Flexible Governance**: Allows for various governance models for NFT management, such as multi-party ownership or requiring approval from designated authorities.
+4. **Student dashboard**: The NFT is displayed in the student dashboard.
 
 ## Current Implementation with ERC721
 
@@ -56,43 +54,13 @@ In the current version of the Multisignature NFT Wallet, we are using the ERC721
 
 4. **Signature Storage**: Signatures are stored off-chain to reduce gas costs, with only a hash of the combined signatures stored on-chain.
 
-## Workflow
-
-The workflow of the Multisignature NFT Wallet can be broken down into several key processes:
-
-1. **NFT Creation**
-   - User initiates NFT creation
-   - Multiple authorized signers apply their signatures
-   - The multisigned NFT is minted and added to the wallet
-
-2. **NFT Storage**
-   - NFT is stored securely in the wallet
-   - Wallet maintains a record of all stored NFTs and their signature requirements
-
-3. **NFT Transfer**
-   - User initiates a transfer
-   - Required signers are notified
-   - Each signer reviews and signs the transfer
-   - If the threshold is met, the NFT is transferred to the new owner
-
-4. **Verification Process**
-   - Verifier checks the NFT's signatures
-   - If the required threshold of valid signatures is met, the NFT's authenticity is confirmed
-
-## Technical Implementation
-
-[Technical implementation details remain largely the same as in the previous version]
-
-## Security Considerations
-
-[Security considerations remain largely the same as in the previous version]
 
 ## Future Enhancements
 
 [Previous future enhancements remain, with the following addition:]
 
-6. **New ERC Token Standard**: Development of a new ERC token standard specifically designed for Multisignature NFTs, improving efficiency and expanding capabilities.
-
+5. **New ERC Token Standard**: Development of a new ERC token standard specifically designed for Multisignature NFTs, improving efficiency and expanding capabilities.
+6. **SDK Development**: Develop a SDK model, using which users can directly use the concept for their projects. 
 ## Roadmap for New ERC Token
 
 As part of our commitment to innovation and improving the Multisignature NFT ecosystem, we are planning to develop a new ERC token standard specifically designed for Multisignature NFTs. This new standard will build upon the lessons learned from our current ERC721-based implementation and introduce native support for multisignature operations.
