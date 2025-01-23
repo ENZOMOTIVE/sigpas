@@ -11,6 +11,7 @@ import { Shield, BookOpen, Award, ArrowRight } from 'lucide-react'
 import { AnimatedBackground } from './components/ui/animated-background'
 import { FunMintingViz } from './components/fun-minting-viz'
 import { motion } from 'framer-motion'
+import {Footer} from './components/Footer';
 import './index.css'
 
 const FeatureCard = ({ icon: Icon, title, description }: any) => (
@@ -119,6 +120,7 @@ function App() {
               <Route path="/unauthorized" element={<Unauthorized />} />
             </Routes>
           </main>
+          <Footer />
         </div>
         <Toaster 
           position="top-right"
@@ -143,6 +145,9 @@ function App() {
         />
       </Router>
     </WalletProvider>
+
+
+
   )
 }
 

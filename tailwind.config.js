@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import forms from '@tailwindcss/forms';
+
 export default {
   content: [
     "./index.html",
@@ -33,9 +35,8 @@ export default {
           700: '#c2410c',
           800: '#9a3412',
           900: '#7c2d12',
-        }
+        },
       },
-      // Rest of your existing extend configurations
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
       },
@@ -50,8 +51,8 @@ export default {
     },
   },
   plugins: [
-    require('@tailwindcss/forms')({
+    forms({
       strategy: 'class',
     }),
   ],
-}
+};
